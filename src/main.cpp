@@ -1310,11 +1310,11 @@ class Engine final {
             glfwTerminate();
         }
 
-        static Engine* createDebugMode() {
+        static std::unique_ptr<Engine> createDebugMode() {
             return Engine::create(true);
         }
 
-        static Engine* createReleaseMode() {
+        static std::unique_ptr<Engine> createReleaseMode() {
             return Engine::create(false);
         }
 
@@ -1512,8 +1512,8 @@ class Engine final {
         bool m_enableValidationLayers; 
         bool m_enableDebuggingExtensions;
 
-        static Engine* create(bool enableDebugging) {
-            auto newEngine = new Engine {};
+        static std::unique_ptr<Engine> create(bool enableDebugging) {
+            auto newEngine = std::make_unique<Engine>();
 
             if (enableDebugging) {
                 newEngine->m_enableValidationLayers = true;
@@ -1751,7 +1751,7 @@ class App {
             this->cleanup();
         }
     private:
-        Engine* m_engine;
+        std::unique_ptr<Engine> m_engine;
 
         VkImage m_colorImage;
         VkDeviceMemory m_colorImageMemory;
@@ -1837,8 +1837,6 @@ class App {
                     vkDestroyBuffer(m_engine->getLogicalDevice(), m_uniformBuffers[i], nullptr);
                     vkFreeMemory(m_engine->getLogicalDevice(), m_uniformBuffersMemory[i], nullptr);
                 }
-
-                delete m_engine;
             }
         }
 
@@ -1846,7 +1844,7 @@ class App {
             auto engine = Engine::createDebugMode();
             engine->createWindow(WIDTH, HEIGHT, "Multisampling");
 
-            m_engine = engine;
+            m_engine = std::move(engine);
         }
 
         void initEngine() {

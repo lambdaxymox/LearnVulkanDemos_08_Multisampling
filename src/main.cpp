@@ -2775,10 +2775,13 @@ class App {
             renderPassInfo.dependencyCount = 1;
             renderPassInfo.pDependencies = &dependency;
 
-            auto result = vkCreateRenderPass(m_engine->getLogicalDevice(), &renderPassInfo, nullptr, &m_renderPass);
+            auto renderPass = VkRenderPass {};
+            auto result = vkCreateRenderPass(m_engine->getLogicalDevice(), &renderPassInfo, nullptr, &renderPass);
             if (result != VK_SUCCESS) {
                 throw std::runtime_error("failed to create render pass!");
             }
+
+            m_renderPass = renderPass;
         }
 
         void createGraphicsPipeline() {
@@ -2910,7 +2913,8 @@ class App {
             pipelineLayoutInfo.pushConstantRangeCount = 0;    // Optional
             pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-            auto result = vkCreatePipelineLayout(m_engine->getLogicalDevice(), &pipelineLayoutInfo, nullptr, &m_pipelineLayout);
+            auto pipelineLayout = VkPipelineLayout {};
+            auto result = vkCreatePipelineLayout(m_engine->getLogicalDevice(), &pipelineLayoutInfo, nullptr, &pipelineLayout);
             if (result != VK_SUCCESS) {
                 throw std::runtime_error("failed to create pipeline layout!");
             }
@@ -2927,19 +2931,20 @@ class App {
             pipelineInfo.pDepthStencilState = &depthStencil;
             pipelineInfo.pColorBlendState = &colorBlending;
             pipelineInfo.pDynamicState = &dynamicState;
-            pipelineInfo.layout = m_pipelineLayout;
+            pipelineInfo.layout = pipelineLayout;
             pipelineInfo.renderPass = m_renderPass;
             pipelineInfo.subpass = 0;
             pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; // Optional
             pipelineInfo.basePipelineIndex = -1;              // Optional
 
+            auto graphicsPipeline = VkPipeline {};
             result = vkCreateGraphicsPipelines(
                 m_engine->getLogicalDevice(), 
                 VK_NULL_HANDLE, 
                 1, 
                 &pipelineInfo, 
                 nullptr, 
-                &m_graphicsPipeline
+                &graphicsPipeline
             );
         
             if (result != VK_SUCCESS) {
@@ -2950,6 +2955,9 @@ class App {
             vkDestroyShaderModule(m_engine->getLogicalDevice(), fragmentShaderModule, nullptr);
             vkDestroyShaderModule(m_engine->getLogicalDevice(), vertexShaderModule, nullptr);
             */
+
+            m_pipelineLayout = pipelineLayout;
+            m_graphicsPipeline = graphicsPipeline;
         }
 
         void createFramebuffers() {

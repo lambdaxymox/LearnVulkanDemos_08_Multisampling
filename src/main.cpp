@@ -3159,14 +3159,14 @@ class App {
             for (size_t i = 0; i < imageAvailableSemaphores.size(); i++) {
                 const auto result = vkCreateSemaphore(m_engine->getLogicalDevice(), &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]);
                 if (result != VK_SUCCESS) {
-                    throw std::runtime_error("failed to create in-flight semaphore synchronization object");
+                    throw std::runtime_error("failed to create image-available semaphore synchronization object");
                 }
             }
 
             for (size_t i = 0; i < renderFinishedSemaphores.size(); i++) {
                 const auto result = vkCreateSemaphore(m_engine->getLogicalDevice(), &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]);
                 if (result != VK_SUCCESS) {
-                    throw std::runtime_error("failed to create render finished synchronization object");
+                    throw std::runtime_error("failed to create render-finished semaphore synchronization object");
                 }
             }
 

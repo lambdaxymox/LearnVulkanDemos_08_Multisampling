@@ -2353,7 +2353,7 @@ class App {
         }
 
         void createTextureImageView() {
-            auto textureImageView = createImageView(m_textureImage, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT, m_mipLevels);
+            auto textureImageView = this->createImageView(m_textureImage, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT, m_mipLevels);
 
             m_textureImageView = textureImageView;
         }

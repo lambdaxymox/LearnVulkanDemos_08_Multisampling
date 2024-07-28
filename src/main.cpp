@@ -2379,7 +2379,7 @@ class App {
                 .minLod = 0.0f,
                 .maxLod = static_cast<float>(m_mipLevels),
                 .mipLodBias = 0.0f,
-                // Use there parameters to disable anisotropic filtering.
+                // // Use these parameters to disable anisotropic filtering.
                 // .anisotropyEnable = VK_FALSE,
                 // .maxAnisotropy = 1.0f,
             };

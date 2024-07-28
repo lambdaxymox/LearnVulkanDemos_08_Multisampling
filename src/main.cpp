@@ -2165,8 +2165,7 @@ class App {
         }
 
         void createColorResources() {
-            VkFormat colorFormat = m_swapChainImageFormat;
-
+            const auto colorFormat = m_swapChainImageFormat;
             const auto [colorImage, colorImageMemory] = this->createImage(
                 m_swapChainExtent.width,
                 m_swapChainExtent.height,
@@ -2185,8 +2184,7 @@ class App {
         }
 
         void createDepthResources() {
-            VkFormat depthFormat = this->findDepthFormat();
-
+            const auto depthFormat = this->findDepthFormat();
             const auto [depthImage, depthImageMemory] = this->createImage(
                 m_swapChainExtent.width,
                 m_swapChainExtent.height,
@@ -2405,8 +2403,7 @@ class App {
         }
 
         void createVertexBuffer() {
-            VkDeviceSize bufferSize = sizeof(m_mesh.vertices()[0]) * m_mesh.vertices().size();
-
+            const auto bufferSize = VkDeviceSize { sizeof(m_mesh.vertices()[0]) * m_mesh.vertices().size() };
             VkBufferUsageFlags stagingBufferUsageFlags = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
             VkMemoryPropertyFlags stagingBufferPropertyFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | 
                 VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
@@ -2441,8 +2438,7 @@ class App {
         }
 
         void createIndexBuffer() {
-            VkDeviceSize bufferSize = sizeof(m_mesh.indices()[0]) * m_mesh.indices().size();
-
+            const auto bufferSize = VkDeviceSize { sizeof(m_mesh.indices()[0]) * m_mesh.indices().size() };
             VkBufferUsageFlags stagingBufferUsageFlags = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
             VkMemoryPropertyFlags stagingBufferPropertyFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | 
                 VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
@@ -2853,8 +2849,8 @@ class App {
         }
 
         void createGraphicsPipeline() {
-            auto vertexShaderModule = m_engine->createShaderModuleFromFile("shaders/shader.vert.hlsl.spv");
-            auto fragmentShaderModule = m_engine->createShaderModuleFromFile("shaders/shader.frag.hlsl.spv");
+            const auto vertexShaderModule = m_engine->createShaderModuleFromFile("shaders/shader.vert.hlsl.spv");
+            const auto fragmentShaderModule = m_engine->createShaderModuleFromFile("shaders/shader.frag.hlsl.spv");
 
             const auto vertexShaderStageInfo = VkPipelineShaderStageCreateInfo {
                 .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
@@ -2868,7 +2864,7 @@ class App {
                 .module = fragmentShaderModule,
                 .pName = "main",
             };
-            auto shaderStages = std::array<VkPipelineShaderStageCreateInfo, 2> {
+            const auto shaderStages = std::array<VkPipelineShaderStageCreateInfo, 2> {
                 vertexShaderStageInfo,
                 fragmentShaderStageInfo
             };
@@ -2910,9 +2906,7 @@ class App {
                 .polygonMode = VK_POLYGON_MODE_FILL,
                 .lineWidth = 1.0f,
                 .cullMode = VK_CULL_MODE_BACK_BIT,
-                /*
-                .frontFace = VK_FRONT_FACE_CLOCKWISE,
-                */
+                // .frontFace = VK_FRONT_FACE_CLOCKWISE,
                 .frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE,
                 .depthBiasEnable = VK_FALSE,
             };

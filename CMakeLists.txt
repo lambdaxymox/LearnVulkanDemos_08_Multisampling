@@ -88,6 +88,7 @@ add_executable(LearnVulkanDemos_08_Multisampling)
 target_sources(LearnVulkanDemos_08_Multisampling PRIVATE
     src/main.cpp
     src/engine.cpp
+    src/engine_impl_fmt.cpp
 )
 target_link_libraries(LearnVulkanDemos_08_Multisampling PRIVATE Vulkan::Vulkan)
 target_link_libraries(LearnVulkanDemos_08_Multisampling PRIVATE glfw)
